@@ -29,3 +29,8 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+
+## Use this to run the server
+```
+flask run
+```
