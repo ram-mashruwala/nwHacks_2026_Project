@@ -9,4 +9,4 @@ app.config.from_object(Config)
 
 class Base(DeclarativeBase): pass
 
-from app import routes
+from app import api_routes, web_socket_routes
