@@ -6,31 +6,41 @@
 python -m venv venv
 ```
 
-## Activate the virtual environment:
+## Activate the virtual environment
 
-### Windows:
+### Windows
 
-- cmd:
-```
+<details><summary>Windows</summary>
+If you are using cmd
+
+```sh
 venv\Scripts\activate
 ```
 
-- powershell:
-```
+If you are using powershell
+
+```sh
 .\venv\Scripts\Activate.ps1
 ```
 
-### Linux/Mac:
-```
+</details>
+
+<details><summary> Linux and Mac </summary>
+
+```sh
 source venv/bin/activate
 ```
 
-## Install python packages:
-```
+</details>
+
+## Install python packages
+
+```sh
 pip install -r requirements.txt
 ```
 
 ## Use this to run the server
-```
+
+```sh
 flask run
 ```
