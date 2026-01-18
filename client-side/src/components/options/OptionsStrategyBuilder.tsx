@@ -32,7 +32,7 @@ export function OptionsStrategyBuilder() {
   const handleSaveStrategy = async (name: string) => {
     setIsSaving(true);
     try {
-      await saveStrategy(name, legs);
+      await saveStrategy(name, legs, stockSymbol);
       setStrategyName(name);
       toast({
         title: "Strategy Saved",
@@ -52,6 +52,9 @@ export function OptionsStrategyBuilder() {
   const handleLoadStrategy = (strategy: SavedStrategy) => {
     setLegs(strategy.legs);
     setStrategyName(strategy.name);
+    if (strategy.stockSymbol) {
+    // 1. Update the symbol state so the input field shows the ticker
+    setStockSymbol(strategy.stockSymbol);}
   };
 
   const handleAddLeg = () => {

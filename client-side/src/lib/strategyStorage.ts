@@ -5,6 +5,7 @@ export interface SavedStrategy {
   id: string;
   name: string;
   legs: OptionLeg[];
+  stockSymbol?: string;
   // createdAt: string;
   // updatedAt: string;
 }
@@ -13,7 +14,7 @@ export interface SavedStrategy {
 // API Functions - Connect to your Flask backend
 // ===========================================
 
-export async function saveStrategy(name: string, legs: OptionLeg[]): Promise<SavedStrategy> {
+export async function saveStrategy(name: string, legs: OptionLeg[], stockSymbol: string): Promise<SavedStrategy> {
   // const strategy: SavedStrategy = {
   //   name,
   //   legs,
@@ -28,6 +29,7 @@ export async function saveStrategy(name: string, legs: OptionLeg[]): Promise<Sav
       {
         name: name,
         legs: legs,
+        stockSymbol: stockSymbol
       },
       { headers: { "Content-Type": "application/json" } }
     );

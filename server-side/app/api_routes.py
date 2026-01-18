@@ -66,13 +66,15 @@ def saveStrategy():
     
     name = save_strategy_input_data["name"]
     legs = save_strategy_input_data["legs"]
+    stockSymbol = save_strategy_input_data.get("stockSymbol", "")
 
     strategy: dict = {
         #TODO: make db create id not server
         "id": uuid.uuid4(),
 
         "name": name,
-        "legs": legs
+        "legs": legs,
+        "stockSymbol": stockSymbol
     }
 
     in_memory_strategy_db.append(strategy) #todo: replace this with db query

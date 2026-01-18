@@ -74,11 +74,28 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
     }
   };
 
-  // 2. Use Ref to prevent stale closures
+  // 2. Use Ref to prevent stale closures (Leave this as is)
   const fetchPriceRef = useRef(fetchPrice);
   useEffect(() => {
     fetchPriceRef.current = fetchPrice;
   });
+
+  // NEW: Stop Live Mode and sync if symbol is empty/changed
+  useEffect(() => {
+    if (!currentSymbol) {
+      setIsLive(false); // This stops the interval in Section 3
+      setSymbol("");    // Clear the internal input
+      return;
+    }
+
+    // Sync input field if parent loads a new symbol
+    if (currentSymbol !== symbol) {
+      console.log(currentSymbol);
+      setSymbol(currentSymbol);
+      fetchPrice(currentSymbol);
+      setIsLive(true);
+    }
+  }, [currentSymbol]);
 
   // 3. The Interval Effect
   useEffect(() => {
