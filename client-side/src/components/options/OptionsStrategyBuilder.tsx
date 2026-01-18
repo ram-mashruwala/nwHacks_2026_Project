@@ -7,6 +7,7 @@ import { StrategyMetrics } from "./StrategyMetrics";
 import { StrategyPresets } from "./StrategyPresets";
 import { SaveStrategyDialog } from "./SaveStrategyDialog";
 import { LoadStrategyDialog } from "./LoadStrategyDialog";
+import { StockPriceFetcher } from "./StockPriceFetcher";
 import { analyzeStrategy, type OptionLeg } from "@/lib/options";
 import { saveStrategy, type SavedStrategy } from "@/lib/strategyStorage";
 import { toast } from "@/hooks/use-toast";
@@ -22,7 +23,8 @@ const defaultLeg: OptionLeg = {
 export function OptionsStrategyBuilder() {
   const [legs, setLegs] = useState<OptionLeg[]>([defaultLeg]);
   const [strategyName, setStrategyName] = useState("Custom Strategy");
-  const [basePrice] = useState(100);
+  const [basePrice, setBasePrice] = useState(100);
+  const [stockSymbol, setStockSymbol] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const analysis = useMemo(() => analyzeStrategy(legs), [legs]);
@@ -86,6 +88,11 @@ export function OptionsStrategyBuilder() {
     setStrategyName(name);
   };
 
+  const handleStockPriceChange = (price: number, symbol: string) => {
+    setBasePrice(price);
+    setStockSymbol(symbol);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -106,6 +113,13 @@ export function OptionsStrategyBuilder() {
         </div>
       </div>
 
+      {/* Stock Price Fetcher */}
+      <StockPriceFetcher
+        onPriceChange={handleStockPriceChange}
+        currentPrice={basePrice}
+        currentSymbol={stockSymbol}
+      />
+
       {/* Presets */}
       <StrategyPresets onSelectPreset={handleSelectPreset} basePrice={basePrice} />
 
@@ -113,8 +127,13 @@ export function OptionsStrategyBuilder() {
       <StrategyMetrics analysis={analysis} />
 
       {/* Chart */}
-      <OptionsPayoffChart analysis={analysis} strategyName={strategyName} />
-
+       <OptionsPayoffChart 
+        analysis={analysis} 
+        strategyName={strategyName}
+        currentPrice={stockSymbol ? basePrice : undefined}
+        currentSymbol={stockSymbol}
+      />
+      
       {/* Legs */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">

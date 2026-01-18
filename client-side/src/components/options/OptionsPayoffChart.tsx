@@ -15,9 +15,11 @@ interface OptionsPayoffChartProps {
   analysis: StrategyAnalysis;
   strategyName?: string;
   strategyIntroduction?:string;
+  currentPrice?: number; // Add the '?' here
+  currentSymbol?: string; // Usually good to make this optional too
 }
 
-export function OptionsPayoffChart({ analysis, strategyName, strategyIntroduction }: OptionsPayoffChartProps) {
+export function OptionsPayoffChart({ analysis, strategyName, strategyIntroduction,currentPrice, currentSymbol }: OptionsPayoffChartProps){
   const { payoffData, breakevens } = analysis;
 
   const chartData = useMemo(() => {
@@ -95,6 +97,25 @@ export function OptionsPayoffChart({ analysis, strategyName, strategyIntroductio
           
           {/* Zero line */}
           <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1.5} />
+          
+          <ReferenceLine y={0} stroke="hsl(var(--foreground))" strokeWidth={1.5} />
+          
+          {/* Current stock price line */}
+          {currentPrice && currentPrice > 0 && (
+            <ReferenceLine
+              x={currentPrice}
+              stroke="hsl(var(--chart-1))"
+              strokeWidth={2}
+              strokeDasharray="3 3"
+              label={{
+                value: `${currentSymbol || 'Price'}: $${currentPrice.toFixed(2)}`,
+                position: 'top',
+                fill: 'hsl(var(--chart-1))',
+                fontSize: 12,
+                fontWeight: 'bold',
+              }}
+            />
+          )}
           
           {/* Breakeven lines */}
           {breakevens.map((be, index) => (
