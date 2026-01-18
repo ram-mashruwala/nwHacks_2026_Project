@@ -5,7 +5,7 @@ export function Header() {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'Strategy Builder', icon: TrendingUp },
+    { path: '/options', label: 'Strategy Builder', icon: TrendingUp },
     { path: '/tutorial', label: 'Tutorial', icon: BookOpen },
   ];
 
