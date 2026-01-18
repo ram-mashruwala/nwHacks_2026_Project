@@ -5,7 +5,8 @@ import Tutorial from "./pages/Tutorial";
 
 import "./App.css"
 import "./index.css"
-import Index from "./pages/Index-deleteLater";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/options" element={<OptionsStrategy />} />
         <Route path="/login" element = {<Login/>}/>
         <Route path="/tutorial" element = {<Tutorial/>}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
