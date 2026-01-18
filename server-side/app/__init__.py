@@ -17,4 +17,4 @@ socketio = SocketIO(app=app,
  engineio_logger=True,
  cors_allowed_origins="*" # this is very dangerous but it's fineeeee
 )
-from app import api_routes, web_socket_routes
+from app import api_routes, web_socket_routes, authentication_routes
