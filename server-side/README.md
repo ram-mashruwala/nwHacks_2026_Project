@@ -44,3 +44,9 @@ pip install -r requirements.txt
 ```sh
 python3 server-side.py
 ```
+
+## Ensure that you have the updated db schema
+
+```
+flask db upgrade
+```

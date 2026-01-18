@@ -35,16 +35,14 @@ def googleCallback():
   # test to print the session tokens and data
   print(json.dumps(session.get("user_token"), indent=4))
 
-  user = db.session.scalars(sa.select(User).where(User.email == session.get("user_token")["userinfo"]["email"])).first()
+  found_user = db.session.scalars(sa.select(User).where(User.email == session.get("user_token")["userinfo"]["email"])).first()
 
-  if not user:
+  if not found_user:
     print("Creating User")
     new_user = User(username=session["user_token"]["userinfo"]["name"], email=session["user_token"]["userinfo"]["email"])
     db.session.add(new_user)
     db.session.flush()
     db.session.commit()
-
-  print(user.username)
 
   # create response function obj equal to redirect fn - redirect the user to the client side root page for now
   #todo: allow for different redirect routes
