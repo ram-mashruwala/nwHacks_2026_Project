@@ -1,17 +1,19 @@
-import { useState, useMemo } from 'react';
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { OptionLegForm } from './OptionLegForm';
-import { OptionsPayoffChart } from './OptionsPayoffChart';
-import { StrategyMetrics } from './StrategyMetrics';
-import { StrategyPresets } from './StrategyPresets';
-import { analyzeStrategy, type OptionLeg } from '@/lib/options';
+import { useState, useMemo } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { OptionLegForm } from "./OptionLegForm";
+import { OptionsPayoffChart } from "./OptionsPayoffChart";
+import { StrategyMetrics } from "./StrategyMetrics";
+import { StrategyPresets } from "./StrategyPresets";
+import { SaveStrategyDialog } from "./SaveStrategyDialog";
+import { LoadStrategyDialog } from "./LoadStrategyDialog";
+import { analyzeStrategy, type OptionLeg } from "@/lib/options";
+import { saveStrategy, type SavedStrategy } from "@/lib/strategyStorage";
+import { toast } from "@/hooks/use-toast";
 
 const defaultLeg: OptionLeg = {
-  type: 'call',
-  position: 'long',
+  type: "call",
+  position: "long",
   strike: 100,
   premium: 5,
   quantity: 1,
@@ -19,10 +21,36 @@ const defaultLeg: OptionLeg = {
 
 export function OptionsStrategyBuilder() {
   const [legs, setLegs] = useState<OptionLeg[]>([defaultLeg]);
-  const [strategyName, setStrategyName] = useState('Custom Strategy');
-  const [basePrice, setBasePrice] = useState(100);
+  const [strategyName, setStrategyName] = useState("Custom Strategy");
+  const [basePrice] = useState(100);
+  const [isSaving, setIsSaving] = useState(false);
 
   const analysis = useMemo(() => analyzeStrategy(legs), [legs]);
+
+  const handleSaveStrategy = async (name: string) => {
+    setIsSaving(true);
+    try {
+      await saveStrategy(name, legs);
+      setStrategyName(name);
+      toast({
+        title: "Strategy Saved",
+        description: `"${name}" has been saved successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save strategy",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleLoadStrategy = (strategy: SavedStrategy) => {
+    setLegs(strategy.legs);
+    setStrategyName(strategy.name);
+  };
 
   const handleAddLeg = () => {
     const lastLeg = legs[legs.length - 1];
@@ -31,7 +59,7 @@ export function OptionsStrategyBuilder() {
       {
         ...defaultLeg,
         strike: lastLeg?.strike || basePrice,
-        type: lastLeg?.type === 'call' ? 'put' : 'call',
+        type: lastLeg?.type === "call" ? "put" : "call",
       },
     ]);
   };
@@ -40,12 +68,12 @@ export function OptionsStrategyBuilder() {
     const newLegs = [...legs];
     newLegs[index] = leg;
     setLegs(newLegs);
-    setStrategyName('Custom Strategy');
+    setStrategyName("Custom Strategy");
   };
 
   const handleRemoveLeg = (index: number) => {
     setLegs(legs.filter((_, i) => i !== index));
-    setStrategyName('Custom Strategy');
+    setStrategyName("Custom Strategy");
   };
 
   const handleSelectPreset = (presetLegs: OptionLeg[], name: string) => {
@@ -68,16 +96,13 @@ export function OptionsStrategyBuilder() {
             Visualize breakevens, max profit/loss for any options strategy
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <Label className="text-sm text-muted-foreground whitespace-nowrap">Base Price</Label>
-          <Input
-            type="number"
-            value={basePrice}
-            onChange={(e) => setBasePrice(parseFloat(e.target.value) || 100)}
-            className="w-24 h-9 bg-background/50"
-            min={1}
-            step={1}
+        <div className="flex gap-2">
+          <SaveStrategyDialog
+            currentName={strategyName}
+            onSave={handleSaveStrategy}
+            isSaving={isSaving}
           />
+          <LoadStrategyDialog onLoad={handleLoadStrategy} />
         </div>
       </div>
 
