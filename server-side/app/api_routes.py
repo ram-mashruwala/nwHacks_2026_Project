@@ -2,7 +2,9 @@ from app import app
 from flask import jsonify, request
 import finnhub
 
+# print(app.config.get("OAUTH2_CLIENT_ID"))
 
+# todo: delete these two later
 @app.route("/")
 @app.route("/index")
 def index():

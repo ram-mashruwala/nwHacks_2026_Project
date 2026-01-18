@@ -14,5 +14,12 @@ class Config:
   # encrypts the data at the server side
   SECRET_KEY = FLASK_SECRET
   FLASK_PORT = 5000
+  
+  # Session Configuration
+  SESSION_TYPE = "filesystem"
+  SESSION_COOKIE_SECURE = False
+  SESSION_COOKIE_HTTPONLY = True
+  SESSION_COOKIE_SAMESITE = 'Lax'
+  
   # SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
   SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
