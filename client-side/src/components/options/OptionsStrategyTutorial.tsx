@@ -1,11 +1,7 @@
 import { useState, useMemo } from 'react';
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { OptionLegForm } from './OptionLegForm';
 import { OptionsPayoffChart } from './OptionsPayoffChart';
-import { StrategyMetrics } from './StrategyMetrics';
 import { StrategyPresets } from './StrategyPresets';
 import { analyzeStrategy, type OptionLeg } from '@/lib/options';
 
@@ -20,36 +16,36 @@ const defaultLeg: OptionLeg = {
 export function OptionsStrategyTutorial() {
   const [legs, setLegs] = useState<OptionLeg[]>([defaultLeg]);
   const [strategyName, setStrategyName] = useState('Custom Strategy');
-  const[StrategyIntroduction,setStrategyIntroduction] = useState ('Custom Strategy');
+  const[strategyIntroduction,setStrategyIntroduction] = useState ('Custom Strategy');
   const [basePrice, setBasePrice] = useState(100);
 
   const analysis = useMemo(() => analyzeStrategy(legs), [legs]);
 
-  const handleAddLeg = () => {
-    const lastLeg = legs[legs.length - 1];
-    setLegs([
-      ...legs,
-      {
-        ...defaultLeg,
-        strike: lastLeg?.strike || basePrice,
-        type: lastLeg?.type === 'call' ? 'put' : 'call',
-      },
-    ]);
-  };
+  // const handleAddLeg = () => {
+  //   const lastLeg = legs[legs.length - 1];
+  //   setLegs([
+  //     ...legs,
+  //     {
+  //       ...defaultLeg,
+  //       strike: lastLeg?.strike || basePrice,
+  //       type: lastLeg?.type === 'call' ? 'put' : 'call',
+  //     },
+  //   ]);
+  // };
 
-  const handleUpdateLeg = (index: number, leg: OptionLeg) => {
-    const newLegs = [...legs];
-    newLegs[index] = leg;
-    setLegs(newLegs);
-    setStrategyName('Custom Strategy');
-    setStrategyIntroduction('Custom Strategy');
-  };
+  // const handleUpdateLeg = (index: number, leg: OptionLeg) => {
+  //   const newLegs = [...legs];
+  //   newLegs[index] = leg;
+  //   setLegs(newLegs);
+  //   setStrategyName('Custom Strategy');
+  //   setStrategyIntroduction('Custom Strategy');
+  // };
 
-  const handleRemoveLeg = (index: number) => {
-    setLegs(legs.filter((_, i) => i !== index));
-    setStrategyName('Custom Strategy');
-    setStrategyIntroduction('Custom Strategy');
-  };
+  // const handleRemoveLeg = (index: number) => {
+  //   setLegs(legs.filter((_, i) => i !== index));
+  //   setStrategyName('Custom Strategy');
+  //   setStrategyIntroduction('Custom Strategy');
+  // };
 
   const handleSelectPreset = (presetLegs: OptionLeg[], name: string, introduction:string) => {
     // Adjust strikes relative to base price
@@ -92,7 +88,7 @@ export function OptionsStrategyTutorial() {
       {/* <StrategyMetrics analysis={analysis} /> */}
 
       {/* Chart */}
-      <OptionsPayoffChart analysis={analysis} strategyName={strategyName} StrategyIntroduction = {StrategyIntroduction}/>
+      <OptionsPayoffChart analysis={analysis} strategyName={strategyName} strategyIntroduction = {strategyIntroduction}/>
 
       {/* Legs */}
       <div className="space-y-4">
