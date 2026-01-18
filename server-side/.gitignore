@@ -8,3 +8,5 @@ __pycache__
 !.vscode/settings.json
 !.vscode/extensions.json
 !.vscode/launch.json
+
+app.db
