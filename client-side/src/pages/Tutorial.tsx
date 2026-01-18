@@ -2,8 +2,9 @@ import { useState, useMemo } from 'react';
 import { Header } from '@/components/Header';
 import { TutorialStrategyPresets } from '@/components/tutorial/TutorialStrategyPresets';
 import { StrategyExplanation } from '@/components/tutorial/StrategyExplanation';
-import { OptionsPayoffChart } from '@/components/options/OptionsPayoffChart';
-import { StrategyMetrics } from '@/components/options/StrategyMetrics';
+import { OptionsTerminology } from '@/components/tutorial/OptionsTerminology';
+import { StrategyContractExample } from '@/components/tutorial/StrategyContractExample';
+import { OptionsPayoffChart } from '@/components/options/OptionsPayoffChart';import { StrategyMetrics } from '@/components/options/StrategyMetrics';
 import { analyzeStrategy } from '@/lib/options';
 import type { PresetConfig } from '@/lib/strategyPresetData';
 import { BookOpen } from 'lucide-react';
@@ -38,6 +39,11 @@ const Tutorial = () => {
           </p>
         </div>
 
+         {/* Terminology Section */}
+        <div className="mb-6">
+          <OptionsTerminology />
+        </div>
+
         <div className="space-y-6">
           <TutorialStrategyPresets
             selectedStrategy={selectedPreset?.name ?? null}
@@ -48,6 +54,11 @@ const Tutorial = () => {
           {selectedPreset && analysis && (
             <>
               <StrategyExplanation strategyName={selectedPreset.name} />
+              <StrategyContractExample 
+              strategyName={selectedPreset.name} 
+              legs={selectedPreset.legs} 
+              basePrice={basePrice} 
+              />
               <StrategyMetrics analysis={analysis} />
               <OptionsPayoffChart analysis={analysis} strategyName={selectedPreset.name} />
             </>
