@@ -109,3 +109,17 @@ def deleteStrategies(strategy_id: int):
     print(in_memory_strategy_db)
 
     return jsonify(in_memory_strategy_db)
+
+@app.route("/api/alerts", methods=["POST"])
+@login_required
+def observePrice():
+    input_data = request.get_json()
+    stockSymbol = input_data["stockSymbol"]
+    price = input_data["targetPrice"]
+    print(stockSymbol)
+    print(price)
+
+    return jsonify({
+        "status": "success", 
+        "message": f"Alert set for {stockSymbol} at {price}"
+    }), 201
