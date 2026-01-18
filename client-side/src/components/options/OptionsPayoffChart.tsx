@@ -14,9 +14,10 @@ import type { PayoffPoint, StrategyAnalysis } from '@/lib/options';
 interface OptionsPayoffChartProps {
   analysis: StrategyAnalysis;
   strategyName?: string;
+  strategyIntroduction?:string;
 }
 
-export function OptionsPayoffChart({ analysis, strategyName }: OptionsPayoffChartProps) {
+export function OptionsPayoffChart({ analysis, strategyName, strategyIntroduction }: OptionsPayoffChartProps) {
   const { payoffData, breakevens } = analysis;
 
   const chartData = useMemo(() => {
@@ -35,7 +36,7 @@ export function OptionsPayoffChart({ analysis, strategyName }: OptionsPayoffChar
     );
   }
 
-  const minPayoff = Math.min(...payoffData.map(p => p.payoff));
+  const minPayAdd a tutorial page, sharing same quick strategies and off = Math.min(...payoffData.map(p => p.payoff));
   const maxPayoff = Math.max(...payoffData.map(p => p.payoff));
   const padding = Math.max(Math.abs(minPayoff), Math.abs(maxPayoff)) * 0.1;
 
