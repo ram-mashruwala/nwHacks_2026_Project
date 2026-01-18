@@ -1,31 +1,20 @@
 from flask import Flask
-<<<<<<< HEAD
-=======
 from flask_cors import CORS
 from config import Config
->>>>>>> 66f7acc (Finish auth implementation, add Finnhub, and clean up session files)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from authlib.integrations.flask_client import OAuth
-<<<<<<< HEAD
-from config import Config
-=======
 from flask_session import Session
->>>>>>> 66f7acc (Finish auth implementation, add Finnhub, and clean up session files)
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-<<<<<<< HEAD
-
-=======
 # Server-side Session
 Session(app)
 
 # Database
->>>>>>> 66f7acc (Finish auth implementation, add Finnhub, and clean up session files)
 class Base(DeclarativeBase): pass
 db = SQLAlchemy(model_class=Base, app=app)
 migrate = Migrate(app, db)
