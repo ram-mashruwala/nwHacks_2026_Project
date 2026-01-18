@@ -2,9 +2,29 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { useEffect } from "react";
+import { socket } from "./socket.js";
 
 function App() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      console.log("Connected to server:", socket.id);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected");
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <>

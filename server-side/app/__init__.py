@@ -8,6 +8,9 @@ from flask_socketio import SocketIO
 app = Flask(__name__)
 app.config.from_object(Config)
 
-socketio = SocketIO(app=app, logger=True, engineio_logger=True)
-
+socketio = SocketIO(app=app,
+ logger=True,
+ engineio_logger=True,
+ cors_allowed_origins="*" # this is very dangerous but it's fineeeee
+)
 from app import api_routes, web_socket_routes
