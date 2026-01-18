@@ -1,8 +1,10 @@
 import random
+
+from app.auth_routes import login_required
 from app import app
 from flask import jsonify, request
 import finnhub
-from flask_cors import CORS
+import uuid
 
 # print(app.config.get("OAUTH2_CLIENT_ID"))
 
@@ -12,9 +14,10 @@ from flask_cors import CORS
 # def index():
 #     return jsonify({"message": "hello"})
 
+in_memory_strategy_db: list = []
+
 @app.route("/api/get-price", methods=["GET"])
 def get_price():
-    print("in get price endpoint")
     finnhub_client = finnhub.Client(app.config.get("FINNHUB"))
     stock_symbol = request.args.get('stock')
     if not stock_symbol:
@@ -44,3 +47,48 @@ def get_price():
         print(f"Error: {e}")
         return jsonify({"error": "API Error"}), 500
 
+# Strategies
+
+@app.route("/api/strategies", methods=["POST"])
+@login_required
+def saveStrategy():
+
+    save_strategy_input_data = request.get_json()
+
+    if not save_strategy_input_data:
+        return jsonify({"error": "Data cannot be null"}), 400
+    
+    if 'name' not in save_strategy_input_data:
+        return jsonify({"error": "Invalid data, 'name' is required"}), 400
+    
+    if 'legs' not in save_strategy_input_data:
+        return jsonify({"error": "Invalid data, 'legs' is required"}), 400
+    
+    name = save_strategy_input_data["name"]
+    legs = save_strategy_input_data["legs"]
+
+    strategy: dict = {
+        #TODO: make db create id not server
+        "id": uuid.uuid4(),
+
+        "name": name,
+        "legs": legs
+    }
+
+    in_memory_strategy_db.append(strategy) #todo: replace this with db query
+
+    print(in_memory_strategy_db)
+
+    return strategy
+
+@app.route("/api/strategies", methods=["GET"])
+@login_required
+def loadAllStrategies():
+
+    savedStrategies: list[dict] = []
+
+    savedStrategies = in_memory_strategy_db #todo: replace this with db query
+
+    print(savedStrategies)
+
+    return savedStrategies

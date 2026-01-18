@@ -6,14 +6,14 @@ from flask import json, session, redirect, jsonify
 
 # A simple, secure way to check if a user is logged in
 def login_required(endpoint_function):
-    from functools import wraps
-    @wraps(endpoint_function)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_token") is None:
-            # For an API, return a JSON error instead of redirecting
-            return jsonify({"error": "Unauthorized"}), 401
-        return endpoint_function(*args, **kwargs)
-    return decorated_function
+  from functools import wraps
+  @wraps(endpoint_function)
+  def decorated_function(*args, **kwargs):
+      if session.get("user_token") is None:
+          # For an API, return a JSON error instead of redirecting
+          return jsonify({"error": "Unauthorized"}), 401
+      return endpoint_function(*args, **kwargs)
+  return decorated_function
 
 # === Auth Routes ===
 
