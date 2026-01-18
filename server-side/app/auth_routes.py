@@ -41,8 +41,8 @@ def googleCallback():
     print("Creating User")
     new_user = User(username=session["user_token"]["userinfo"]["name"], email=session["user_token"]["userinfo"]["email"])
     db.session.add(new_user)
-    db.session.commit()
     db.session.flush()
+    db.session.commit()
 
   print(user.username)
 
