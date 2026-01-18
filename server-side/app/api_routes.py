@@ -92,3 +92,18 @@ def loadAllStrategies():
     print(savedStrategies)
 
     return savedStrategies
+
+@app.route("/api/strategies/<strategy_id>", methods=["DELETE"])
+@login_required
+def deleteStrategies(strategy_id: int):
+    global in_memory_strategy_db
+
+    # Filter out the strategy with the matching ID (comparing as strings)
+    in_memory_strategy_db = [
+        strategy for strategy in in_memory_strategy_db 
+        if str(strategy.get("id")) != strategy_id
+    ] #todo: replace this with db query
+
+    print(in_memory_strategy_db)
+
+    return jsonify(in_memory_strategy_db)

@@ -79,45 +79,47 @@ export async function deleteStrategy(id: string): Promise<void> {
   // await fetch(`${API_BASE_URL}/strategies/${id}`, { method: "DELETE" });
   // return;
 
+    const response = await apiClient.delete(
+      `/strategies/${id}`
+    );
 
-  // Fallback: localStorage for development
-  const strategies = getStrategiesFromStorage();
-  const filtered = strategies.filter((s) => s.id !== id);
-  localStorage.setItem("savedStrategies", JSON.stringify(filtered));
+    if (!resOk(response.status)) {
+      throw new Error("Unable to delete strategy");
+    }
 }
 
-export async function updateStrategy(id: string, name: string, legs: OptionLeg[]): Promise<SavedStrategy> {
-  // TODO: Replace with your Flask API call
-  // const response = await fetch(`${API_BASE_URL}/strategies/${id}`, {
-  //   method: "PUT",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ name, legs }),
-  // });
-  // return response.json();
+// export async function updateStrategy(id: string, name: string, legs: OptionLeg[]): Promise<SavedStrategy> {
+//   // TODO: Replace with your Flask API call
+//   // const response = await fetch(`${API_BASE_URL}/strategies/${id}`, {
+//   //   method: "PUT",
+//   //   headers: { "Content-Type": "application/json" },
+//   //   body: JSON.stringify({ name, legs }),
+//   // });
+//   // return response.json();
 
 
-  // Fallback: localStorage for development
-  const strategies = getStrategiesFromStorage();
-  const index = strategies.findIndex((s) => s.id === id);
-  if (index !== -1) {
-    strategies[index] = {
-      ...strategies[index],
-      name,
-      legs,
-      updatedAt: new Date().toISOString(),
-    };
-    localStorage.setItem("savedStrategies", JSON.stringify(strategies));
-    return strategies[index];
-  }
-  throw new Error("Strategy not found");
-}
+//   // Fallback: localStorage for development
+//   const strategies = getStrategiesFromStorage();
+//   const index = strategies.findIndex((s) => s.id === id);
+//   if (index !== -1) {
+//     strategies[index] = {
+//       ...strategies[index],
+//       name,
+//       legs,
+//       updatedAt: new Date().toISOString(),
+//     };
+//     localStorage.setItem("savedStrategies", JSON.stringify(strategies));
+//     return strategies[index];
+//   }
+//   throw new Error("Strategy not found");
+// }
 
-// Helper function for localStorage fallback
-function getStrategiesFromStorage(): SavedStrategy[] {
-  try {
-    const stored = localStorage.getItem("savedStrategies");
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
+// // Helper function for localStorage fallback
+// function getStrategiesFromStorage(): SavedStrategy[] {
+//   try {
+//     const stored = localStorage.getItem("savedStrategies");
+//     return stored ? JSON.parse(stored) : [];
+//   } catch {
+//     return [];
+//   }
+// }
