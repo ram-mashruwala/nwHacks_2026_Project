@@ -29,7 +29,9 @@ def get_price():
     try:
         # Fetch Quote (Real-time)
         quote = finnhub_client.quote(stock_symbol)
-        
+
+        if not quote or quote.get("t", 0) == 0 or quote.get("c", 0) == 0:
+            return jsonify({"error": "Symbol not found"}), 404
         # Finnhub returns 'c' for Current Price
         # c = Current price, d = Change, dp = Percent change
         current_price = quote['c'] + random.randint(5, 10)

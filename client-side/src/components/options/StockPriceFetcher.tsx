@@ -22,6 +22,7 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
   const [symbol, setSymbol] = useState(currentSymbol || '');
   const [isLoading, setIsLoading] = useState(false);
   const [isLive, setIsLive] = useState(false);
+  const [inputError, setInputError] = useState(false);
   
   // NEW: State for target price and alert submission loading
   const [targetPrice, setTargetPrice] = useState<string>('');
@@ -29,7 +30,11 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
 
   // 1. Define the fetch function
   const fetchPrice = async (stockSymbol: string, isAutoRefresh = false) => {
-    if (!stockSymbol.trim() || (isLoading && !isAutoRefresh)) return;
+    if (!stockSymbol.trim()) {
+        setInputError(true);
+    }
+    if (isLoading && !isAutoRefresh) 
+        return;
 
     if (!isAutoRefresh) setIsLoading(true);
     
@@ -37,11 +42,13 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
       const response = await apiClient.get(`/get-price?stock=${stockSymbol.toUpperCase()}`);
       
       if (!resOk(response.status)) {
+        
         throw new Error(response.statusText || 'Failed to fetch price');
       }
       
       const data = await response.data;
       const stockData = data as StockData;
+      console.log(stockData.symbol);
       
       onPriceChange(stockData.price, stockData.symbol);
       setSymbol(stockData.symbol);
@@ -53,6 +60,10 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
         });
       }
     } catch (error) {
+        console.log("invalid symbol or failed to fetch the price")
+        setInputError(true);
+
+
       if (isAutoRefresh) {
         setIsLive(false);
         toast({
@@ -157,13 +168,19 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
       <div className="space-y-3">
         {/* Fetch Form */}
         <form onSubmit={handleSubmit} className="flex gap-2">
-          <Input
+        <Input
             value={symbol}
-            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+            onChange={(e) => {
+                setSymbol(e.target.value.toUpperCase());
+                setInputError(false);
+            }}
             placeholder="Ticker (e.g., AAPL)"
-            className="flex-1 uppercase"
+            className={`flex-1 uppercase ${
+                inputError ? "border-red-500 focus:ring-red-500" : ""
+                }`}
             maxLength={10}
-          />
+            />
+
           <Button type="submit" size="sm" disabled={isLoading} className="gap-2 min-w-[100px]">
             {isLoading ? 'Loading...' : isLive && symbol === currentSymbol ? (
               <><Activity className="h-4 w-4" /> Refresh</>
