@@ -106,7 +106,22 @@ def saveStrategy():
 
     # print(in_memory_strategy_db)
 
-    # return strategy
+    option_legs = []
+    for option_leg in strategy.option_legs:
+        option_legs.append({
+            "type": option_leg.option_type,
+            "position": option_leg.position_type,
+            "strike": option_leg.strike,
+            "premium": option_leg.premium,
+            "quantity": option_leg.quantity,
+        })
+
+    return jsonify({
+        "id": strategy.id,
+        "name": strategy.name,
+        "legs": option_legs,
+        "stockSymbol": strategy.stock_symbol,
+    }), 201
 
 @app.route("/api/strategies", methods=["GET"])
 @login_required
@@ -144,7 +159,7 @@ def loadAllStrategies():
 @app.route("/api/strategies/<int:strategy_id>", methods=["DELETE"])
 @login_required
 def deleteStrategies(strategy_id: int):
-    global in_memory_strategy_db
+    # global in_memory_strategy_db
 
     # Filter out the strategy with the matching ID (comparing as strings)
     # in_memory_strategy_db = [
@@ -163,7 +178,7 @@ def deleteStrategies(strategy_id: int):
 
     # print(in_memory_strategy_db)
 
-    return jsonify({"message": "success"})
+    return jsonify({"message": "success"}), 204
 
 @app.route("/api/alerts", methods=["POST"])
 @login_required
