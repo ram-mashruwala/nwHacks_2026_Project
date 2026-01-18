@@ -20,7 +20,7 @@ const API_BASE_URL = ""; // e.g., "http://localhost:5000/api"
 
 export async function saveStrategy(name: string, legs: OptionLeg[]): Promise<SavedStrategy> {
   const strategy: SavedStrategy = {
-    id: crypto.randomUUID(),
+    id: crypto.randomUUID(), //todo: make backend generate this not the client
     name,
     legs,
     createdAt: new Date().toISOString(),
