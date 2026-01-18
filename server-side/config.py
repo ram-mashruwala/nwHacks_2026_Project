@@ -9,7 +9,8 @@ class Config:
   OAUTH2_META_URL = os.environ.get("OAUTH2_META_URL") or ""
   OAUTH2_REDIRECT_URI = os.environ.get("OAUTH2_REDIRECT_URI") or ""
   FLASK_SECRET = os.environ.get("FLASK_SECRET") or "you-will-never-guess"
-  
+  FINNHUB= os.environ.get("FINNHUB") or "TEST"
+
   # encrypts the data at the server side
   SECRET_KEY = FLASK_SECRET
   FLASK_PORT = 5000

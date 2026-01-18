@@ -1,13 +1,14 @@
 from flask import Flask
-from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from authlib.integrations.flask_client import OAuth
+from config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 
 class Base(DeclarativeBase): pass
 db = SQLAlchemy(model_class=Base, app=app)
@@ -26,7 +27,9 @@ oauth.register("nwHacks_2026_app",
 socketio = SocketIO(app=app,
  logger=True,
  engineio_logger=True,
- cors_allowed_origins="*" # this is very dangerous but it's fineeeee
+ cors_allowed_origins="*", # this is very dangerous but it's fineeeee
+ async_mode='threading'
 )
+# socketio = SocketIO(app, async_mode='threading')
 
 from app import api_routes, web_socket_routes, auth_routes
