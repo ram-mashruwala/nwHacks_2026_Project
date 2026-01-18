@@ -30,7 +30,11 @@ export function StockPriceFetcher({ onPriceChange, currentPrice, currentSymbol }
 
   // 1. Define the fetch function
   const fetchPrice = async (stockSymbol: string, isAutoRefresh = false) => {
-    if (!stockSymbol.trim() || (isLoading && !isAutoRefresh)) return;
+    if (!stockSymbol.trim()) {
+        setInputError(true);
+    }
+    if (isLoading && !isAutoRefresh) 
+        return;
 
     if (!isAutoRefresh) setIsLoading(true);
     
