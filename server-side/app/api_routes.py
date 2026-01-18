@@ -34,7 +34,7 @@ def get_price():
             return jsonify({"error": "Symbol not found"}), 404
         # Finnhub returns 'c' for Current Price
         # c = Current price, d = Change, dp = Percent change
-        current_price = quote['c'] + random.randint(5, 10)
+        current_price = quote['c'] # + random.randint(5, 10)
         
         # Check if symbol is invalid (Finnhub returns 0 for bad symbols)
         if current_price == 0:
