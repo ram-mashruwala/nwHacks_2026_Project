@@ -1,6 +1,6 @@
 from app import app, oauth, db
 from app.model import User
-from flask import make_response, session, redirect, jsonify
+from flask import make_response, json, session, redirect, jsonify
 import sqlalchemy as sa
 
 client_base_url: str = str(app.config.get("CLIENT_BASE_URL"))
@@ -35,7 +35,7 @@ def googleCallback():
   session["user_token"] = token
   
   # test to print the session tokens and data
-  # print(json.dumps(session.get("user_token"), indent=4))
+  print(json.dumps(session.get("user_token"), indent=4))
 
   found_user = db.session.scalars(sa.select(User).where(User.email == session.get("user_token")["userinfo"]["email"])).first() # type: ignore
 
