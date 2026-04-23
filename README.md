@@ -2,9 +2,15 @@
 
 A web app that models different option trading strategies, allowing users to analyze payoff curves and break-even points for different stock and strategy combinations. Uses real-time stock data.
 
-Project for nwHacks 2026
+(Project for nwHacks 2026)
+
+App
 
 https://nwhacks-2026-options-lab.vercel.app
+
+Devpost
+
+https://devpost.com/software/options-lab
 
 ## Team
 *   [Ram Mashruwala](https://github.com/ram-mashruwala)
